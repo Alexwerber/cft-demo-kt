@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         (applicationContext as ExchangeRateApp).appComponents.inject(this)
 
-        val recycler: RecyclerView = findViewById(R.id.recycle_view)
-
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.adapter = adapter
+        val recycler: RecyclerView =  findViewById<RecyclerView>(R.id.recycle_view).apply{
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = this@MainActivity.adapter
+        }
 
         getFromNetwork()
     }

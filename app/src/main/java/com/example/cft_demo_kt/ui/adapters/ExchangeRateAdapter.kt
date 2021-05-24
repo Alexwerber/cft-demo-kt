@@ -29,10 +29,10 @@ class ExchangeRateAdapter: RecyclerView.Adapter<ExchangeRateAdapter.ViewHolder>(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val exchangeRate = exchangeRateList[position]
-        val formatter = getExchangeRateFormatter(exchangeRate)
+        val formatter = getExchangeRate(exchangeRate)
 
         holder.currencyName.text = exchangeRate.name
-        holder.currencyRate.text = formatter.toString()
+        holder.currencyRate.text = getExchangeRate(exchangeRate)
     }
 
     override fun getItemCount(): Int =
@@ -46,10 +46,11 @@ class ExchangeRateAdapter: RecyclerView.Adapter<ExchangeRateAdapter.ViewHolder>(
         val currencyPercentArrow: ImageView = itemView.findViewById(R.id.currency_percent_arrow)
     }
 
-    private fun getExchangeRateFormatter(exchangeRate: ExchangeRate): Formatter =
+    private fun getExchangeRate(exchangeRate: ExchangeRate): String =
         Formatter()
             .format("%.2f ₽ / %d %s",
                 exchangeRate.value,
                 exchangeRate.nominal,
                 exchangeRate.ticker)
+            .toString()
 }
