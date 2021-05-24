@@ -3,6 +3,7 @@ package com.example.cft_demo_kt.dependencies.components
 import android.app.Application
 import com.example.cft_demo_kt.dependencies.modules.DatabaseModule
 import com.example.cft_demo_kt.dependencies.modules.RetrofitModule
+import com.example.cft_demo_kt.ui.activity.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -21,4 +22,6 @@ interface AppComponents {
         fun application(application: Application?): Builder?
         fun build(): AppComponents?
     }
+
+    fun inject(mainActivity: MainActivity)
 }
