@@ -15,8 +15,6 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var apiService: ApiService
 
     val adapter = ExchangeRateAdapter()
 
@@ -30,21 +28,5 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
-        getFromNetwork()
-    }
-
-    private fun getFromNetwork(): Unit {
-        apiService.getDailyExchangeRate().enqueue(object: Callback<DailyExchangeRates> {
-            override fun onResponse(
-                call: Call<DailyExchangeRates>,
-                response: Response<DailyExchangeRates>
-            ) {
-                response.body()?.valute?.values?.toList()?.let { adapter.setData(it) }
-            }
-
-            override fun onFailure(call: Call<DailyExchangeRates>, t: Throwable) {
-
-            }
-        })
     }
 }
