@@ -16,14 +16,11 @@ import javax.inject.Singleton
 class RetrofitModule {
     @Provides
     @Singleton
-    fun provideOkHttp(): OkHttpClient {
-        val okHttpClient = OkHttpClient.Builder()
+    fun provideOkHttp(): OkHttpClient = OkHttpClient.Builder().run {
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        return okHttpClient
-            .addInterceptor(interceptor)
-            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-            .build()
+        addInterceptor(interceptor)
+        readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+        build()
     }
 
     @Provides
