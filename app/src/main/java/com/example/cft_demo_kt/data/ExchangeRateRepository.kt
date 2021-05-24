@@ -15,10 +15,11 @@ class ExchangeRateRepository {
     @Inject
     lateinit var apiService: ApiService
 
-    private var data: MutableLiveData<List<ExchangeRate>>? = null
+    private var data: MutableLiveData<List<ExchangeRate>> = MutableLiveData()
 
     init {
         ExchangeRateApp.appComponents.inject(this)
+        getFromNetwork()
     }
 
     fun getFromNetwork(): Unit {
@@ -27,7 +28,9 @@ class ExchangeRateRepository {
                 call: Call<DailyExchangeRates>,
                 response: Response<DailyExchangeRates>
             ) {
-                response.body()?.valute?.values?.toList()?.let { data?.value = it }
+                if(response.isSuccessful) {
+                    response.body()?.valute?.values?.toList()?.let { data.value = it }
+                }
             }
 
             override fun onFailure(call: Call<DailyExchangeRates>, t: Throwable) {
@@ -36,5 +39,5 @@ class ExchangeRateRepository {
         })
     }
 
-    fun getData(): LiveData<List<ExchangeRate>>? = data
+    fun getData(): MutableLiveData<List<ExchangeRate>> = data
 }
