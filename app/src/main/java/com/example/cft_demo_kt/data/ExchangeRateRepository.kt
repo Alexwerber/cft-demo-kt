@@ -5,15 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import com.example.cft_demo_kt.ExchangeRateApp
 import com.example.cft_demo_kt.data.entities.DailyExchangeRates
 import com.example.cft_demo_kt.data.entities.ExchangeRate
+import com.example.cft_demo_kt.data.local.dao.ExchangeRateDao
 import com.example.cft_demo_kt.data.remote.ApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class ExchangeRateRepository {
     @Inject
     lateinit var apiService: ApiService
+    @Inject
+    lateinit var exchangeRateDao: ExchangeRateDao
 
     private var data: MutableLiveData<List<ExchangeRate>> = MutableLiveData()
 
@@ -29,7 +33,10 @@ class ExchangeRateRepository {
                 response: Response<DailyExchangeRates>
             ) {
                 if(response.isSuccessful) {
-                    response.body()?.valute?.values?.toList()?.let { data.value = it }
+                    response.body()?.valute?.values?.toList()?.let {
+                        data.value = it
+                        saveToDatabase(it)
+                    }
                 }
             }
 
@@ -37,6 +44,12 @@ class ExchangeRateRepository {
 
             }
         })
+    }
+
+    private fun saveToDatabase(data: List<ExchangeRate>) {
+        Executors.newSingleThreadExecutor().execute(
+            fun () {exchangeRateDao.saveExchangeRate(data)}
+        )
     }
 
     fun getData(): MutableLiveData<List<ExchangeRate>> = data
