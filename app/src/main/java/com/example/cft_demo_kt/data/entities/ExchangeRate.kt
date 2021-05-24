@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
+@Entity(tableName = "exchangeRate")
 data class ExchangeRate(
     @PrimaryKey
     @SerializedName("CharCode") var ticker: String,
