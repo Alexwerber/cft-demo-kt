@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (applicationContext as ExchangeRateApp).appComponents.inject(this)
 
         val recycler: RecyclerView =  findViewById<RecyclerView>(R.id.recycle_view).apply{
             layoutManager = LinearLayoutManager(this@MainActivity)

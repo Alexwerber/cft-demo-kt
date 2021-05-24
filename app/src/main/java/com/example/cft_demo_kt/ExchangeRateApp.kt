@@ -5,7 +5,10 @@ import com.example.cft_demo_kt.dependencies.components.AppComponents
 import com.example.cft_demo_kt.dependencies.components.DaggerAppComponents
 
 class ExchangeRateApp: Application() {
-    lateinit var appComponents: AppComponents
+
+    companion object {
+        lateinit var appComponents: AppComponents
+    }
 
     override fun onCreate() {
         super.onCreate()

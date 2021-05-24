@@ -1,6 +1,7 @@
 package com.example.cft_demo_kt.dependencies.components
 
 import android.app.Application
+import com.example.cft_demo_kt.data.ExchangeRateRepository
 import com.example.cft_demo_kt.dependencies.modules.DatabaseModule
 import com.example.cft_demo_kt.dependencies.modules.RetrofitModule
 import com.example.cft_demo_kt.ui.activity.MainActivity
@@ -23,5 +24,5 @@ interface AppComponents {
         fun build(): AppComponents?
     }
 
-    fun inject(mainActivity: MainActivity)
+    fun inject(exchangeRateRepository: ExchangeRateRepository)
 }

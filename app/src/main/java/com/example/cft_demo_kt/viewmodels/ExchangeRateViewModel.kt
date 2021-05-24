@@ -1,25 +1,17 @@
 package com.example.cft_demo_kt.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.cft_demo_kt.data.ExchangeRateRepository
 import com.example.cft_demo_kt.data.entities.ExchangeRate
-import com.example.cft_demo_kt.data.remote.ApiService
-import javax.inject.Inject
 
 class ExchangeRateViewModel: ViewModel() {
-    @Inject
-    lateinit var apiService: ApiService
+    private val exchangeRateRepository = ExchangeRateRepository()
+    private var exchangeRateList: LiveData<List<ExchangeRate>>? = exchangeRateRepository.getData()
 
-    private val exchangeRate: LiveData<List<ExchangeRate>> by lazy {
-        MutableLiveData<List<ExchangeRate>>().also {
-            loadExchangeRates()
-        }
-    }
-
-    fun getExchangeRateList(): LiveData<List<ExchangeRate>> = exchangeRate
+    fun getExchangeRateList(): LiveData<List<ExchangeRate>>? = exchangeRateList
 
     private fun loadExchangeRates(): Unit {
-
+        exchangeRateRepository.getFromNetwork()
     }
 }
