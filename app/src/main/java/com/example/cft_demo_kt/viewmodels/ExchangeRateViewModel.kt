@@ -12,11 +12,16 @@ class ExchangeRateViewModel: ViewModel() {
 
     init {
         exchangeRateList = exchangeRateRepository.getData()
+        loadData()
     }
 
     fun getExchangeRateList(): LiveData<List<ExchangeRate>> = exchangeRateList
 
     private fun loadExchangeRates(): Unit {
         exchangeRateRepository.getFromNetwork()
+    }
+
+    private fun loadData() {
+        exchangeRateRepository.loadData()
     }
 }

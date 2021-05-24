@@ -1,6 +1,7 @@
 package com.example.cft_demo_kt.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.cft_demo_kt.ExchangeRateApp
 import com.example.cft_demo_kt.data.entities.DailyExchangeRates
@@ -19,7 +20,7 @@ class ExchangeRateRepository {
     @Inject
     lateinit var exchangeRateDao: ExchangeRateDao
 
-    private var data: MutableLiveData<List<ExchangeRate>> = MutableLiveData()
+    private var data: MediatorLiveData<List<ExchangeRate>> = MediatorLiveData()
 
     init {
         ExchangeRateApp.appComponents.inject(this)
@@ -34,7 +35,6 @@ class ExchangeRateRepository {
             ) {
                 if(response.isSuccessful) {
                     response.body()?.valute?.values?.toList()?.let {
-                        data.value = it
                         saveToDatabase(it)
                     }
                 }
@@ -45,6 +45,16 @@ class ExchangeRateRepository {
             }
         })
     }
+
+    fun loadData() {
+        var dbResource = getDataFromDb()
+
+        data.addSource(dbResource) {
+            data.value = it
+        }
+    }
+
+    private fun getDataFromDb() = exchangeRateDao.getExchangeRate()
 
     private fun saveToDatabase(data: List<ExchangeRate>) {
         Executors.newSingleThreadExecutor().execute(
